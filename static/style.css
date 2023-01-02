@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Cantarell&family=Inter&family=Open+Sans:ital@0;1&family=Roboto+Mono&display=swap');
+
 body {
     color: #e8eaed;
     background-color: #202124;
     margin: 10%;
+    font-family: 'Inter', sans-serif;
 }
+
 .uploadmessage {
     background-color: #2e2f31;
     padding: 8px;
     border-radius: 8px;
 }
+
 input {
     background-color: #2e2f31;
     padding: 8px;
@@ -16,6 +20,7 @@ input {
     margin-left: 0;
     border-radius: 8px;
 }
+
 button {
     background-color: #3e9b5b;
     padding: 11px;
@@ -26,14 +31,11 @@ button {
     color: white
 }
 
-p {
-    font-family: 'Inter', sans-serif;
-}
 a {
-    font-family: 'Inter', sans-serif;
     color: #e8eaed;
     text-decoration: none;
 }
+
 .margindiv {
     margin-bottom: 8px;
 }

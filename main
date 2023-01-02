@@ -18,10 +18,6 @@ HOST = "localhost"
 PORT = "8080"
 UPLOAD_FOLDER = "uploads"
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 def delay_delete(delay, filepath):
     time.sleep(delay)
     os.remove(filepath)
@@ -33,7 +29,7 @@ def home():
             message = ("No file selected")
             return render_template("main.html", message=message)
         fileUpload = request.files["file"]
-        randomCharacters = secrets.token_hex(16)
+        randomCharacters = secrets.token_hex(12)
         fileUpload.save(os.path.join(UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename)))
 
         t = Thread(target=delay_delete, args=(1800, os.path.join(UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))))
@@ -46,7 +42,9 @@ def home():
 
 @app.route("/uploads/<name>")
 def download(name):
-    return send_from_directory(UPLOAD_FOLDER, name)
+    response = make_response(send_from_directory(UPLOAD_FOLDER, name))
+    response.mimetype = "application/octet-stream"
+    return response
 
 if __name__ == "__main__":
     from waitress import serve 
