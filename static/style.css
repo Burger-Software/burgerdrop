@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Cantarell&family=Inter&family=Open+Sans:ital@0;1&family=Roboto+Mono&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
 body {
     color: #e8eaed;
     background-color: #202124;
     margin: 10%;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .uploadmessage {
@@ -23,12 +22,13 @@ input {
 
 button {
     background-color: #3e9b5b;
-    padding: 11px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     border-radius: 8px;
     border: none;
-    color: white
+    color: white;
+    font-family: 'Roboto Mono', monospace;
 }
 
 a {
