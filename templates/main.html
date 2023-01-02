@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>burgerdrop</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+<h1><a href="/">burgerdrop</a></h1>
+<p>easily share files up to 8GB. files are deleted after 30 minutes.</p>
+
+{% if message %}
+{% if link %}
+<a href="{{ message }}" class="uploadmessage">{{ message }}</a>
+<br><br>
+<button onclick="Copy()">Copy</button>
+{% else %}
+<a class="uploadmessage">{{ message }}</a>
+{% endif %}
+{% else %}
+<form method="POST" enctype="multipart/form-data">
+    <input name="file" type="file">
+    <button name="submit" type="submit">Upload</button>
+</form>
+{% endif %}
+
+<script>
+    function Copy() {
+        navigator.clipboard.writeText("{{ message }}")
+    };
+
+</script>
+
+</body>
