@@ -37,8 +37,8 @@ def DeleteDir(dir):
 
 
 def ResetCache():
-    DeleteDir("static/cache")
-    os.mkdir("static/cache")
+    DeleteDir(UPLOAD_FOLDER)
+    os.mkdir(UPLOAD_FOLDER)
 
 
 def delay_delete(delay, filepath):
