@@ -10,29 +10,31 @@
 </head>
 
 <body>
-<h1><a href="/">burgerdrop</a></h1>
-<p>easily share files up to 8GB. files are deleted after 30 minutes.</p>
+    <h1><a href="/">burgerdrop</a></h1>
+    <p>easily share files up to 8GB. files are deleted after 30 minutes.</p>
 
-{% if message %}
-{% if link %}
-<a href="{{ message }}" class="uploadmessage">{{ message }}</a>
-<br><br>
-<button onclick="Copy()">Copy</button>
-{% else %}
-<a class="uploadmessage">{{ message }}</a>
-{% endif %}
-{% else %}
-<form method="POST" enctype="multipart/form-data">
-    <input name="file" type="file">
-    <button name="submit" type="submit">Upload</button>
-</form>
-{% endif %}
+    {% if message %}
+    {% if link %}
+    <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
+    <br><br>
+    <button onclick="Copy()">Copy</button>
+    <a href="{{ message }}">
+        <button>Download</button>
+    </a>
+    {% else %}
+    <a class="uploadmessage">{{ message }}</a>
+    {% endif %}
+    {% else %}
+    <form method="POST" enctype="multipart/form-data">
+        <input name="file" type="file">
+        <button name="submit" type="submit">Upload</button>
+    </form>
+    {% endif %}
 
-<script>
-    function Copy() {
-        navigator.clipboard.writeText("{{ message }}")
-    };
-
-</script>
+    <script>
+        function Copy() {
+            navigator.clipboard.writeText("{{ message }}")
+        };
+    </script>
 
 </body>
