@@ -3,23 +3,57 @@ import os
 import json
 import time
 import secrets
+import configparser
 from threading import Thread
+from typing import List, Union
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, url_for, flash, redirect, session, make_response, send_from_directory
 
-# change stuff here
-MAX_FILE_SIZE = 8000  # in MB
-HOST = "localhost"
-PORT = 8080
-UPLOAD_FOLDER = "uploads"
-
-
 print("Server started")
+
+config = configparser.ConfigParser()
+config.read("config.ini")
+
+HOST = config["config"]["HOST"]
+PORT = config["config"]["PORT"]
+UPLOAD_FOLDER = config["config"]["UPLOAD_FOLDER"]
+MAX_FILE_SIZE = config["config"]["MAX_FILE_SIZE"]
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = secrets.token_hex(256)
-app.config["MAX_CONTENT_LENGTH"] = MAX_FILE_SIZE * 1000 * 1000
-# 16 MB would be 16 * 1000 * 1000
+app.config["MAX_CONTENT_LENGTH"] = int(MAX_FILE_SIZE)
 
+class HumanBytes:
+    METRIC_LABELS: List[str] = ["B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+    BINARY_LABELS: List[str] = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+    PRECISION_OFFSETS: List[float] = [0.5, 0.05, 0.005, 0.0005] # PREDEFINED FOR SPEED.
+    PRECISION_FORMATS: List[str] = ["{}{:.0f} {}", "{}{:.1f} {}", "{}{:.2f} {}", "{}{:.3f} {}"] # PREDEFINED FOR SPEED.
+
+    @staticmethod
+    def format(num: Union[int, float], metric: bool=False, precision: int=1) -> str:
+
+        assert isinstance(num, (int, float)), "num must be an int or float"
+        assert isinstance(metric, bool), "metric must be a bool"
+        assert isinstance(precision, int) and precision >= 0 and precision <= 3, "precision must be an int (range 0-3)"
+
+        unit_labels = HumanBytes.METRIC_LABELS if metric else HumanBytes.BINARY_LABELS
+        last_label = unit_labels[-1]
+        unit_step = 1000 if metric else 1024
+        unit_step_thresh = unit_step - HumanBytes.PRECISION_OFFSETS[precision]
+
+        is_negative = num < 0
+        if is_negative:
+            num = abs(num)
+
+        for unit in unit_labels:
+            if num < unit_step_thresh:
+                break
+            if unit != last_label:
+                num /= unit_step
+
+        return HumanBytes.PRECISION_FORMATS[precision].format("-" if is_negative else "", num, unit)
+
+FORMATTED_MAX_FILE_SIZE = HumanBytes.format(int(MAX_FILE_SIZE), True)
 
 def DeleteDir(dir):
     if dir[-1] == os.sep:
@@ -37,8 +71,12 @@ def DeleteDir(dir):
 
 
 def ResetCache():
-    DeleteDir(UPLOAD_FOLDER)
-    os.mkdir(UPLOAD_FOLDER)
+    try:
+        DeleteDir(UPLOAD_FOLDER)
+        os.mkdir(UPLOAD_FOLDER)
+    except:
+        DeleteDir(UPLOAD_FOLDER)
+        os.mkdir(UPLOAD_FOLDER)
 
 
 def delay_delete(delay, filepath):
@@ -53,7 +91,7 @@ def home():
             message = ("No file selected")
             return render_template("main.html", message=message)
         fileUpload = request.files["file"]
-        randomCharacters = secrets.token_hex(12)
+        randomCharacters = secrets.token_hex(8)
         fileUpload.save(os.path.join(UPLOAD_FOLDER, secure_filename(
             randomCharacters + "-" + fileUpload.filename)))
 
@@ -63,16 +101,34 @@ def home():
 
         message = (request.url + "s/" +
                    secure_filename(randomCharacters + "-" + fileUpload.filename))
-        return render_template("main.html", message=message, link=True)
+        return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
 
-    return render_template("main.html")
+    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
 
 
 @app.route("/s/<name>")
 def download(name):
-    response = make_response(send_from_directory(UPLOAD_FOLDER, name))
-    response.mimetype = "application/octet-stream"
-    return response
+    try:
+        response = make_response(send_from_directory(UPLOAD_FOLDER, name))
+        response.mimetype = "application/octet-stream"
+        return response
+    except:
+        return render_template("error.html", error="This file no longer exists. Ask the uploader of the file to reupload the file.")
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", error="This page doesn't exist. (404)")
+
+
+@app.errorhandler(413)
+def page_not_found(e):
+    return render_template("error.html", error="You can't upload files larger than " + FORMATTED_MAX_FILE_SIZE + " (413)")
+
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("error.html", error="Something went wrong. (500)")
 
 
 if __name__ == "__main__":

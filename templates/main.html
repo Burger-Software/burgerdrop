@@ -11,7 +11,7 @@
 
 <body>
     <h1><a href="/">burgerdrop</a></h1>
-    <p>easily share files up to 8GB. files are deleted after 30 minutes.</p>
+    <p>easily share files up to {{ MAX_FILE_SIZE }}. files are deleted after 30 minutes.</p>
 
     {% if message %}
     {% if link %}
@@ -36,5 +36,4 @@
             navigator.clipboard.writeText("{{ message }}")
         };
     </script>
-
 </body>
