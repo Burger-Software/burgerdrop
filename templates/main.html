@@ -16,22 +16,31 @@
     {% if message %}
     {% if link %}
     <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
-    <br><br>
-    <button onclick="Copy()">Copy</button>
-    <a href="{{ message }}">
-        <button>Download</button>
-    </a>
+    <button id="copyButton" onclick="Copy()">Copy</button>
     {% else %}
     <a class="uploadmessage">{{ message }}</a>
     {% endif %}
     {% else %}
-    <form method="POST" enctype="multipart/form-data">
-        <input name="file" type="file">
-        <button name="submit" type="submit">Upload</button>
+    <form id="fileForm" method="POST" enctype="multipart/form-data">
+        <input id="fileInput" onclick="uploadFile()" alt="Upload" name="file" type="file">
+        <noscript>
+        <button id="submit" name="submit" type="submit">Upload</button>
+        </noscript>
     </form>
+    <br>
+    or upload files with curl
+    <p class="uploadmessage">curl -F "file=@yourfile.png" "{{ requesturl }}"</p>
     {% endif %}
 
+    <br>
+    <u><a class="infop" href="/info">about burgerdrop</a></u>
+
     <script>
+        let fileForm = document.getElementById("fileForm")
+        let fileInput = document.getElementById("fileInput")
+        fileInput.onchange = function(e) {
+            fileForm.submit()
+        }
         function Copy() {
             navigator.clipboard.writeText("{{ message }}")
         };

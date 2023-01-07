@@ -1,5 +1,5 @@
 <h1>🍔 Burgerdrop</h1>
-FOSS file sharing service with a 512MB file uploading limit. (will be raised in the future)<br>
+FOSS file sharing website with a 512MB upload limit. (will be raised in the future)<br>
 https://burgerdrop.burger-user.repl.co/
 
 <h2>🖥️ Self-hosting Burgerdrop</h2>

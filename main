@@ -23,18 +23,25 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = secrets.token_hex(256)
 app.config["MAX_CONTENT_LENGTH"] = int(MAX_FILE_SIZE)
 
+
 class HumanBytes:
-    METRIC_LABELS: List[str] = ["B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
-    BINARY_LABELS: List[str] = ["B", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
-    PRECISION_OFFSETS: List[float] = [0.5, 0.05, 0.005, 0.0005] # PREDEFINED FOR SPEED.
-    PRECISION_FORMATS: List[str] = ["{}{:.0f} {}", "{}{:.1f} {}", "{}{:.2f} {}", "{}{:.3f} {}"] # PREDEFINED FOR SPEED.
+    METRIC_LABELS: List[str] = ["B", "kB", "MB",
+                                "GB", "TB", "PB", "EB", "ZB", "YB"]
+    BINARY_LABELS: List[str] = ["B", "KiB", "MiB",
+                                "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"]
+    # PREDEFINED FOR SPEED.
+    PRECISION_OFFSETS: List[float] = [0.5, 0.05, 0.005, 0.0005]
+    # PREDEFINED FOR SPEED.
+    PRECISION_FORMATS: List[str] = ["{}{:.0f} {}",
+                                    "{}{:.1f} {}", "{}{:.2f} {}", "{}{:.3f} {}"]
 
     @staticmethod
-    def format(num: Union[int, float], metric: bool=False, precision: int=1) -> str:
+    def format(num: Union[int, float], metric: bool = False, precision: int = 1) -> str:
 
         assert isinstance(num, (int, float)), "num must be an int or float"
         assert isinstance(metric, bool), "metric must be a bool"
-        assert isinstance(precision, int) and precision >= 0 and precision <= 3, "precision must be an int (range 0-3)"
+        assert isinstance(
+            precision, int) and precision >= 0 and precision <= 3, "precision must be an int (range 0-3)"
 
         unit_labels = HumanBytes.METRIC_LABELS if metric else HumanBytes.BINARY_LABELS
         last_label = unit_labels[-1]
@@ -53,7 +60,9 @@ class HumanBytes:
 
         return HumanBytes.PRECISION_FORMATS[precision].format("-" if is_negative else "", num, unit)
 
+
 FORMATTED_MAX_FILE_SIZE = HumanBytes.format(int(MAX_FILE_SIZE), True)
+
 
 def DeleteDir(dir):
     if dir[-1] == os.sep:
@@ -101,9 +110,13 @@ def home():
 
         message = (request.url + "s/" +
                    secure_filename(randomCharacters + "-" + fileUpload.filename))
+
+        if (str(request.user_agent)).find("curl") >= 0:
+            return message
+
         return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
 
-    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
+    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=request.url)
 
 
 @app.route("/s/<name>")
@@ -116,6 +129,11 @@ def download(name):
         return render_template("error.html", error="This file no longer exists. Ask the uploader of the file to reupload the file.")
 
 
+@app.route("/info")
+def info():
+    return render_template("info.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("error.html", error="This page doesn't exist. (404)")
@@ -123,7 +141,7 @@ def page_not_found(e):
 
 @app.errorhandler(413)
 def page_not_found(e):
-    return render_template("error.html", error="You can't upload files larger than " + FORMATTED_MAX_FILE_SIZE + " (413)")
+    return render_template("error.html", error="You can't upload files larger than " + FORMATTED_MAX_FILE_SIZE + ".")
 
 
 @app.errorhandler(500)

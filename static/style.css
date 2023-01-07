@@ -23,7 +23,7 @@ input {
 }
 
 button {
-    background-color: #3e9b5b;
+    background-color: #2e2f31;
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
@@ -40,4 +40,10 @@ a {
 
 .margindiv {
     margin-bottom: 8px;
+}
+
+.infop {
+    position: fixed;
+    bottom: 5%;
+    width: 100%;
 }
