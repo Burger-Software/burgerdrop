@@ -16,7 +16,14 @@
     {% if message %}
     {% if link %}
     <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
-    <button id="copyButton" onclick="Copy()">Copy</button>
+    <button id="copyButton" class="copyButton" onclick="Copy()">Copy</button>
+    <noscript>
+        <style>
+            .copyButton {
+                display: none;
+            }
+        </style>
+    </noscript>
     {% else %}
     <a class="uploadmessage">{{ message }}</a>
     {% endif %}
