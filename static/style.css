@@ -23,18 +23,6 @@ input {
     font-family: 'Roboto Mono', monospace;
 }
 
-@media (max-width: 650px) {
-    .uploadmessage {
-        width: calc(100% - 40px)
-    }
-    input {
-        width: calc(100% - 50px);
-        line-height: 55px;
-        height: 55px;
-        padding-left: 15px;
-    }
-}
-
 button {
     background-color: #2e2f31;
     padding: 10px;
@@ -59,4 +47,21 @@ a {
     position: fixed;
     bottom: 5%;
     width: 100%;
+}
+
+@media (max-width: 500px) {
+    .uploadmessage {
+        width: calc(100% - 40px)
+    }
+    input {
+        width: calc(100% - 50px);
+        line-height: 45px;
+        height: 45px;
+        padding-left: 15px;
+    }
+    button {
+        width: calc(100% - 27px);
+        height: 37px;
+        padding-left: 15px;
+    }
 }
