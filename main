@@ -116,7 +116,7 @@ def home():
 
         return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
 
-    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=request.url)
+    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=str(request.url).replace("http", "https"))
 
 
 @app.route("/s/<name>")
