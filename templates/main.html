@@ -19,6 +19,7 @@
     <div class="infobox">
         {% if message %}
         {% if link %}
+        <p>{{ filename }} ({{ filesize }})</p>
         <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
         <button id="copyButton" class="copyButton" onclick="Copy()">Copy</button>
         <noscript>

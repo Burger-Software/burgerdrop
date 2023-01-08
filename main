@@ -114,7 +114,12 @@ def home():
         if (str(request.user_agent)).find("curl") >= 0:
             return message
 
-        return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
+        filesize = str(os.stat(os.path.join(
+            UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))).st_size)
+        formattedfilesize = HumanBytes.format(int(filesize), True)
+
+
+        return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=secure_filename(fileUpload.filename), filesize=formattedfilesize)
 
     return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=str(request.url).replace("http", "https"))
 
