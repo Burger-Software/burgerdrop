@@ -5,26 +5,34 @@ body {
     background-color: #202124;
     margin: 40px;
     font-family: 'Roboto Mono', monospace;
+    text-align: center;
 }
 
 .uploadmessage {
-    background-color: #2e2f31;
+    background-color: #202124;
     padding: 8px;
     border-radius: 8px;
     width: fit-content;
+    text-align: center;
+
+    border-color: #494a4d;
+    border-width: 1px;
+    border-style: solid;
 }
 
 input {
-    background-color: #2e2f31;
+    background-color: #202124;
     padding: 8px;
-    margin: 8px;
-    margin-left: 0;
     border-radius: 8px;
     font-family: 'Roboto Mono', monospace;
+
+    border-color: #494a4d;
+    border-width: 1px;
+    border-style: solid;
 }
 
 button {
-    background-color: #2e2f31;
+    background-color: #202124;
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
@@ -32,6 +40,10 @@ button {
     border: none;
     color: white;
     font-family: 'Roboto Mono', monospace;
+
+    border-color: #494a4d;
+    border-width: 1px;
+    border-style: solid;
 }
 
 a {
@@ -39,29 +51,23 @@ a {
     text-decoration: none;
 }
 
-.margindiv {
-    margin-bottom: 8px;
-}
-
-.infop {
-    position: fixed;
-    bottom: 40px;
-    width: 100%;
+.infobox {
+    background-color: #2e2f31;
+    text-align: left;
+    border-radius: 12px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-bottom: 10px;
 }
 
 @media (max-width: 500px) {
     .uploadmessage {
-        width: calc(100% - 40px)
+        width: calc(100% - 30px);
     }
+
     input {
-        width: calc(100% - 50px);
+        width: calc(100% - 30px);
         line-height: 45px;
         height: 45px;
-        padding-left: 15px;
-    }
-    button {
-        width: calc(100% - 27px);
-        height: 37px;
-        padding-left: 15px;
     }
 }

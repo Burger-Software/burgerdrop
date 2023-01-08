@@ -84,8 +84,8 @@ def ResetCache():
         DeleteDir(UPLOAD_FOLDER)
         os.mkdir(UPLOAD_FOLDER)
     except:
-        DeleteDir(UPLOAD_FOLDER)
         os.mkdir(UPLOAD_FOLDER)
+        DeleteDir(UPLOAD_FOLDER)
 
 
 def delay_delete(delay, filepath):

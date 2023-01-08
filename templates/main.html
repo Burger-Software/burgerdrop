@@ -10,34 +10,42 @@
 </head>
 
 <body>
-    <h1><a href="/">burgerdrop</a></h1>
-    <p>easily share files up to {{ MAX_FILE_SIZE }}. files are deleted after 30 minutes.</p>
-
-    {% if message %}
-    {% if link %}
-    <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
-    <button id="copyButton" class="copyButton" onclick="Copy()">Copy</button>
-    <noscript>
-        <style>
-            .copyButton {
-                display: none;
-            }
-        </style>
-    </noscript>
-    {% else %}
-    <a class="uploadmessage">{{ message }}</a>
-    {% endif %}
-    {% else %}
-    <form id="fileForm" method="POST" enctype="multipart/form-data">
-        <input id="fileInput" onclick="uploadFile()" alt="Upload" name="file" type="file">
+    <div class="infobox">
+        <h1><a href="/">burgerdrop</a></h1>
+    </div>
+    <div class="infobox">
+        <p>easily share files up to {{ MAX_FILE_SIZE }}. files are deleted after 30 minutes.</p>
+    </div>
+    <div class="infobox">
+        {% if message %}
+        {% if link %}
+        <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
+        <button id="copyButton" class="copyButton" onclick="Copy()">Copy</button>
         <noscript>
-            <button id="submit" name="submit" type="submit">Upload</button>
+            <style>
+                .copyButton {
+                    display: none;
+                }
+            </style>
         </noscript>
-    </form>
-    <br>
-    or upload files with curl
-    <p class="uploadmessage">curl -F "file=@yourfile.png" "{{ requesturl }}"</p>
-    {% endif %}
+        {% else %}
+        <a class="uploadmessage">{{ message }}</a>
+        {% endif %}
+        {% else %}
+        <br>
+        upload files here
+        <br><br>
+        <form id="fileForm" method="POST" enctype="multipart/form-data">
+            <input id="fileInput" onclick="uploadFile()" alt="Upload" name="file" type="file">
+            <noscript>
+                <button id="submit" name="submit" type="submit">Upload</button>
+            </noscript>
+        </form>
+        <br>
+        or upload files using curl
+        <p class="uploadmessage">curl -F "file=@yourfile.png" "{{ requesturl }}"</p>
+        {% endif %}
+    </div>
 
     <br>
     <u><a class="infop" href="/info">about burgerdrop</a></u>
@@ -45,7 +53,7 @@
     <script>
         let fileForm = document.getElementById("fileForm")
         let fileInput = document.getElementById("fileInput")
-        fileInput.onchange = function(e) {
+        fileInput.onchange = function (e) {
             fileForm.submit()
         }
         function Copy() {
