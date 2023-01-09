@@ -51,6 +51,11 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    background-color: #f1b739;
+    color: black;
+}
+
 .infobox {
     background-color: #2e2f31;
     text-align: left;
@@ -58,6 +63,25 @@ a {
     padding: 5px;
     padding-left: 15px;
     margin-bottom: 10px;
+}
+
+.infop {
+    left: 40px;
+    position: absolute;
+    bottom: 40px;
+}
+
+::selection {
+    color: rgb(0, 0, 0);
+    background: #f1b739;
+}
+
+.infop:hover {
+    color: #000000;
+}
+
+.infopd {
+    bottom: 65px;
 }
 
 @media (max-width: 500px) {
