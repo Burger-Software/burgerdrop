@@ -18,6 +18,7 @@ HOST = config["config"]["HOST"]
 PORT = config["config"]["PORT"]
 UPLOAD_FOLDER = config["config"]["UPLOAD_FOLDER"]
 MAX_FILE_SIZE = config["config"]["MAX_FILE_SIZE"]
+STARTURL = config["config"]["STARTURL"]
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = secrets.token_hex(256)
@@ -106,20 +107,23 @@ def home():
             UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))))
         t.start()
 
-        message = (request.url + "s/" +
+        message = (STARTURL + "/s/" +
                    secure_filename(randomCharacters + "-" + fileUpload.filename))
+        filelink = "/" + "s/" + \
+            secure_filename(randomCharacters + "-" + fileUpload.filename)
 
         if (str(request.user_agent)).find("curl") >= 0:
             return message
 
-        filesize = str(os.stat(os.path.join(
-            UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))).st_size)
-        formattedfilesize = HumanBytes.format(int(filesize), True)
+        return render_template("uploading.html", link="/file/url=" + str(filelink).replace("/", "!") + "+name=" + fileUpload.filename)
 
+        # filesize = str(os.stat(os.path.join(
+        #    UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))).st_size)
+        #formattedfilesize = HumanBytes.format(int(filesize), True)
 
-        return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=secure_filename(fileUpload.filename), filesize=formattedfilesize)
+        # return render_template("main.html", message=message, link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=secure_filename(fileUpload.filename), filesize=formattedfilesize)
 
-    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=str(request.url).replace("http", "https"))
+    return render_template("main.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, requesturl=STARTURL)
 
 
 @app.route("/s/<name>")
@@ -135,6 +139,11 @@ def download(name):
 @app.route("/info")
 def info():
     return render_template("info.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
+
+
+@app.route('/file/url=<url>+name=<name>')
+def file(url, name):
+    return render_template("main.html", message=STARTURL + str(url).replace("!", "/"), link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=name)
 
 
 @app.errorhandler(404)

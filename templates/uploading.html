@@ -7,13 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
+    <meta http-equiv="refresh" content="0; url={{ link }}">
 </head>
 
 <body>
-    <div class="infobox">
-        <h1 class="title"><a class="title" href="/">burgerdrop</a></h1>
-    </div>
-    <div class="infobox">
-        <p>{{ error }}</p>
+    <div class="spinnercontainer">
+        <span class="spinner"></span>
     </div>
 </body>

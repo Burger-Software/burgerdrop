@@ -7,12 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.css') }}" />
+    <link rel="stylesheet" type="text/css"
+        href="{{ url_for('static', filename='font-awesome-4.7.0/css/font-awesome.css') }}" />
 </head>
 
 <body>
     <div class="infobox">
-        <h1><a href="/">burgerdrop</a></h1>
+        <h1 class="title"><a class="title" href="/">burgerdrop</a></h1>
     </div>
     <div class="infobox">
         <p>easily share files up to {{ MAX_FILE_SIZE }}. files are deleted after 30 minutes.</p>
@@ -20,7 +21,7 @@
     <div class="infobox">
         {% if message %}
         {% if link %}
-        <p>{{ filename }} ({{ filesize }})</p>
+        <p>{{ filename }}</p>
         <a href="{{ message }}" class="uploadmessage">{{ message }}</a>
         <button id="copyButton" class="copyButton" onclick="Copy()">Copy</button>
         <noscript>
@@ -37,7 +38,7 @@
         <br>
         upload files here
         <br><br>
-        <form id="fileForm" method="POST" enctype="multipart/form-data">
+        <form id="fileForm" method="POST" onsubmit="console.log();return false" enctype="multipart/form-data">
             <input id="fileInput" onclick="uploadFile()" alt="Upload" name="file" type="file">
             <noscript>
                 <button id="submit" name="submit" type="submit">Upload</button>
@@ -48,13 +49,15 @@
         <p class="uploadmessage">curl -F "file=@yourfile.png" "{{ requesturl }}"</p>
         {% endif %}
     </div>
-    
-    <a class="infop infopd" href="https://github.com/maaa101/burgerdrop"><i class="fa fa-github" aria-hidden="true"></i> github</a>
+
+    <a class="infop infopd" href="https://github.com/maaa101/burgerdrop"><i class="fa fa-github" aria-hidden="true"></i>
+        github</a>
     <a class="infop" href="/info"><i class="fa fa-file-text" aria-hidden="true"></i> terms of service</a>
 
     <script>
         let fileForm = document.getElementById("fileForm")
         let fileInput = document.getElementById("fileInput")
+
         fileInput.onchange = function (e) {
             fileForm.submit()
         }

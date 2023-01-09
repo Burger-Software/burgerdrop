@@ -20,6 +20,11 @@ body {
     border-style: solid;
 }
 
+.uploadmessage:hover {
+    background: #202124;
+    color: #e8eaed;
+}
+
 input {
     background-color: #202124;
     padding: 8px;
@@ -36,14 +41,20 @@ button {
     padding: 10px;
     padding-left: 15px;
     padding-right: 15px;
+    margin-bottom: 1px;
     border-radius: 8px;
     border: none;
-    color: white;
+    color: #e8eaed;
     font-family: 'Roboto Mono', monospace;
 
     border-color: #494a4d;
     border-width: 1px;
     border-style: solid;
+}
+
+button:hover {
+    background-color: #f1b739;
+    color: black;
 }
 
 a {
@@ -84,6 +95,11 @@ a:hover {
     bottom: 65px;
 }
 
+.title:hover {
+    color: #e8eaed;
+    background: none;
+}
+
 @media (max-width: 500px) {
     .uploadmessage {
         width: calc(100% - 30px);
@@ -94,4 +110,45 @@ a:hover {
         line-height: 45px;
         height: 45px;
     }
+}
+
+
+/* Spinner loading animation */
+.spinner {
+    /* Spinner size and color */
+    width: 3rem;
+    height: 3rem;
+    border-top-color: #e8eaed;
+    border-left-color: #e8eaed;
+
+    /* Additional spinner styles */
+    animation: spinner 400ms linear infinite;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Animation styles */
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinnercontainer {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
