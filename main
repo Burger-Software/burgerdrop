@@ -4,6 +4,7 @@ import json
 import time
 import secrets
 import configparser
+import base64
 from threading import Thread
 from typing import List, Union
 from werkzeug.utils import secure_filename
@@ -92,6 +93,21 @@ def delay_delete(delay, filepath):
     os.remove(filepath)
 
 
+def Base64Encode(string):
+    message_bytes = string.encode("ascii")
+    base64_bytes = base64.b64encode(message_bytes)
+    base64_message = base64_bytes.decode("ascii")
+    return base64_message
+
+
+def Base64Decode(string):
+    base64_message = string
+    base64_bytes = base64_message.encode("ascii")
+    message_bytes = base64.b64decode(base64_bytes)
+    message = message_bytes.decode("ascii")
+    return message
+
+
 @app.route("/", methods=("GET", "POST"))
 def home():
     if request.method == "POST":
@@ -115,7 +131,7 @@ def home():
         if (str(request.user_agent)).find("curl") >= 0:
             return message
 
-        return render_template("uploading.html", link="/file/url=" + str(filelink).replace("/", "!") + "+name=" + fileUpload.filename)
+        return render_template("uploading.html", link="/file/u=" + Base64Encode(filelink) + "+n=" + Base64Encode(fileUpload.filename))
 
         # filesize = str(os.stat(os.path.join(
         #    UPLOAD_FOLDER, secure_filename(randomCharacters + "-" + fileUpload.filename))).st_size)
@@ -141,9 +157,9 @@ def info():
     return render_template("info.html", MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE)
 
 
-@app.route('/file/url=<url>+name=<name>')
+@app.route('/file/u=<url>+n=<name>')
 def file(url, name):
-    return render_template("main.html", message=STARTURL + str(url).replace("!", "/"), link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=name)
+    return render_template("main.html", message=STARTURL + Base64Decode(url), link=True, MAX_FILE_SIZE=FORMATTED_MAX_FILE_SIZE, filename=Base64Decode(name))
 
 
 @app.errorhandler(404)
