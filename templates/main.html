@@ -16,7 +16,7 @@
         <h1 class="title"><a class="title" href="/">burgerdrop</a></h1>
     </div>
     <div class="infobox">
-        <p>easily share files up to {{ MAX_FILE_SIZE }}. files are deleted after 30 minutes.</p>
+        <p># Easily share files up to {{ MAX_FILE_SIZE }}. Files are deleted after 30 minutes.</p>
     </div>
     <div class="infobox">
         {% if message %}
@@ -36,7 +36,7 @@
         {% endif %}
         {% else %}
         <br>
-        upload files here
+        # Upload files here
         <br><br>
         <form id="fileForm" method="POST" onsubmit="console.log();return false" enctype="multipart/form-data">
             <input id="fileInput" onclick="uploadFile()" alt="Upload" name="file" type="file">
@@ -45,9 +45,23 @@
             </noscript>
         </form>
         <br>
-        or upload files using curl
+        # Upload files using curl
         <p class="uploadmessage">curl -F "file=@yourfile.png" "{{ requesturl }}"</p>
         {% endif %}
+    </div>
+
+    <div class="infobox">
+        <p># Info</p>
+        <i class="fa fa-upload" aria-hidden="true"></i>
+        Upload files up to {{ MAX_FILE_SIZE }}. <br>
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        Files kept for 30 minutes. <br>
+        <i class="fa fa-tag" aria-hidden="true"></i>
+        Free forever, no ads or subscriptions. <br>
+        <i class="fa fa-terminal" aria-hidden="true"></i>
+        Upload files from anywhere, your PC, your phone, without any hassle. <br>
+        <i class="fa fa-lock" aria-hidden="true"></i> Privacy respecting. We do not collect any data.
+        <br><br>
     </div>
 
     <a class="infop infopd" href="https://github.com/maaa101/burgerdrop"><i class="fa fa-github" aria-hidden="true"></i>
