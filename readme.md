@@ -1,6 +1,6 @@
 <h1>🍔 Burgerdrop</h1>
 FOSS file sharing website with a 512MB upload limit. (will be raised in the future)<br>
-https://burgerdrop.burger-user.repl.co/
+https://drop.hyron.xyz/
 
 <h2>🖥️ Self-hosting Burgerdrop</h2>
 This guide assumes Python and Git is installed. <br>
